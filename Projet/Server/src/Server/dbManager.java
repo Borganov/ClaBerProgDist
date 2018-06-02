@@ -8,43 +8,51 @@ public class dbManager {
 
 	public dbManager() throws java.lang.Exception{
 		Class.forName("org.hsqldb.jdbcDriver");
-		
 		String url ="jdbc:hsqldb:/c:/temp/projetdb_file";
 		
 		con = DriverManager.getConnection(url, "sa", "");
 		
-		
 		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 		
-		/*Création de la db avec les deux tables user et file*/
-		stmt.execute(
-				"CREATE TABLE USER (U_ID INTEGER IDENTITY PRIMARY KEY, "
-				+"U_NAME VARCHAR(50) NOT NULL, "
-				+"U_PASSWORD VARCHAR(50) NOT NULL, )"
-				);
+		/*Création de la db avec les deux tables user et file*/				
+		if(existe(con, "USER")){
+			//Nothing to do
+		}else{
+			stmt.execute(
+			"CREATE TABLE USER (U_ID INTEGER IDENTITY PRIMARY KEY, "
+			+"U_NAME VARCHAR(50) NOT NULL, "
+			+"U_PASSWORD VARCHAR(50) NOT NULL, )"
+			);
+			
+			stmt.execute(
+			"INSERT INTO USER(U_NAME, U_PASSWORD)"
+			+"VALUES('Alex', '123')");
+	
+			stmt.execute(
+			"INSERT INTO USER(U_NAME, U_PASSWORD)"
+			+"VALUES('Yann', '123')");
+	
+			stmt.execute(
+			"INSERT INTO USER(U_NAME, U_PASSWORD)"
+			+"VALUES('Valentin', '123')");
+		}
 		
-		stmt.execute(
-				"CREATE TABLE FILE (F_ID INTEGER IDENTITY PRIMARY KEY , "
-				+"F_NAME VARCHAR(50) NOT NULL, "
-				+"F_PATH VARCHAR(150) NOT NULL, "
-				+ "U_ID INTEGER NOT NULL, "
-				+ "FOREIGN KEY (U_ID) REFERENCES USER(U_ID))");
+		if(existe(con, "FILE")){
+			//Nothing to do
+		}else{
+			stmt.execute(
+			"CREATE TABLE FILE (F_ID INTEGER IDENTITY PRIMARY KEY , "
+			+"F_NAME VARCHAR(50) NOT NULL, "
+			+"F_PATH VARCHAR(150) NOT NULL, "
+			+ "U_ID INTEGER NOT NULL, "
+			+ "FOREIGN KEY (U_ID) REFERENCES USER(U_ID))");
+		}
 		
-		stmt.execute(
-				"INSERT INTO USER(U_NAME, U_PASSWORD)"
-				+"VALUES('Alex', '123')");
-		
-		stmt.execute(
-				"INSERT INTO USER(U_NAME, U_PASSWORD)"
-				+"VALUES('Yann', '123')");
-		
-		stmt.execute(
-				"INSERT INTO USER(U_NAME, U_PASSWORD)"
-				+"VALUES('Valentin', '123')");
-		
-		
+
+	
+
+	
 		stmt.execute("SELECT * FROM USER");
-		
 		
 		ResultSet rs = stmt.getResultSet();
 		
@@ -59,4 +67,16 @@ public class dbManager {
 		stmt.close();
 
 	}
+	
+	public static boolean existe(Connection connection, String nomTable) throws SQLException{
+		boolean existe;
+		DatabaseMetaData dmd = connection.getMetaData();
+		ResultSet tables = dmd.getTables(connection.getCatalog(), null, nomTable, null);
+		existe = tables.next();
+		tables.close();
+		return existe;
+		
+	}
+	
+	
 }

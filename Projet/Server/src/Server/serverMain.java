@@ -23,7 +23,6 @@ public class serverMain {
 		// TODO Auto-generated method stub
 		try {
 			dbManager dbm = new dbManager();
-			System.out.println("Ok db créé");
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
