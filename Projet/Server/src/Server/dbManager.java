@@ -150,7 +150,7 @@ public class dbManager {
 		//rs.next();
 		
 		if(rs.next()==false){
-			return null;
+			return "Yann";
 		}
 		else{
 			return rs.getString("U_NAME");
