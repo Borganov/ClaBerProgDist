@@ -130,8 +130,8 @@ public class clientMain {
 
 						System.out.println();
 						System.out.println("Entrer le numéro du fichier que vous voulez télécharger :");
-						String downloadFile = sc.nextLine();
-						pout.println(downloadFile);
+						String downloadFileNumber = sc.nextLine();
+						pout.println(downloadFileNumber);
 						pout.flush();
 
 						// reception de l'ip et du chemin pour le téléchargement

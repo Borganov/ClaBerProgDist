@@ -126,19 +126,20 @@ public class threadMultiClients implements Runnable {
 							pout.flush();
 
 							
-
 							// reception du choix de téléchargement
 							String downloadChoice = buffin.readLine();
-							System.out.println("---" + downloadChoice);
 							
 							// recherche de l'ip et du chemin du fichier à télécharger
 							String downloadPath = null;
 							String downloadUser = null;
-							for (int i = 0; i < dft.downloadableFiles.length; i++) {
-								if (dft.downloadableFiles[i][0].equals(downloadChoice)) {
-									downloadUser = dft.downloadableFiles[i][1];
-									downloadPath = dft.downloadableFiles[i][2];
+
+							ListIterator<file> fii = fileList.listIterator();
+							while(fii.hasNext()){
+								if(fii.next().getUid()==Integer.parseInt(downloadChoice)) {
+									String path = fileList.get(fii.nextIndex()-1).getPath();
+									System.out.println(path);
 								}
+								
 							}
 
 							String downloadIp = null;
