@@ -131,7 +131,6 @@ public class threadMultiClients implements Runnable {
 							
 							// recherche de l'ip et du chemin du fichier à télécharger
 
-							String downloadUser = null;
 							String downloadPath = null;
 							int downloadUserId = -1;
 							ListIterator<file> fii = fileList.listIterator();
@@ -143,19 +142,16 @@ public class threadMultiClients implements Runnable {
 							}
 
 							String downloadIp = null;
+							String userName = dbm.getUserNameByUserId(downloadUserId);
 
 							ListIterator<user> liu = usersList.usersList.listIterator();
 							while(liu.hasNext()){
-								if(liu.next().getId().equals(downloadUserId))
+								if(liu.next().getId().equals(userName))
 								{
 									downloadIp = usersList.usersList.get(liu.nextIndex()-1).getIp();
 								}
 							}
-<<<<<<< HEAD
 							
-=======
-							System.out.println(downloadIp);
->>>>>>> f9bbd1097310ce903664b1502c2c0ce4c08ba416
 							pout.println(downloadIp);
 							pout.flush();
 							pout.println(downloadPath);

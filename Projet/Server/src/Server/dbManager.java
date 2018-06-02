@@ -136,6 +136,28 @@ public class dbManager {
 
 	}
 	
+	public String getUserNameByUserId(int userId)throws java.lang.Exception {
+		// TODO Auto-generated method stub
+		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		
+		PreparedStatement stmt = con.prepareStatement("SELECT U_NAME FROM USER WHERE"
+				+ " U_ID = ? ");
+		
+		stmt.setInt(1, userId);
+		
+		
+		ResultSet rs = stmt.executeQuery();
+		//rs.next();
+		
+		if(rs.next()==false){
+			return null;
+		}
+		else{
+			return rs.getString("U_NAME");
+		}
+
+	}
+	
 	public void printFileTable()throws java.lang.Exception {
 		// TODO Auto-generated method stub
 		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
