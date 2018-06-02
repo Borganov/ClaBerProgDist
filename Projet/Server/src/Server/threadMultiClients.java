@@ -153,6 +153,9 @@ public class threadMultiClients implements Runnable {
 							}
 <<<<<<< HEAD
 							
+=======
+							System.out.println(downloadIp);
+>>>>>>> f9bbd1097310ce903664b1502c2c0ce4c08ba416
 							pout.println(downloadIp);
 							pout.flush();
 							pout.println(downloadPath);
