@@ -3,8 +3,8 @@ package Server;
 import java.sql.*;
 public class dbManager {
 	
-	private Connection con;
-	private Statement stmt;
+	private  Connection con;
+	private  Statement stmt;
 
 	public dbManager() throws java.lang.Exception{
 		Class.forName("org.hsqldb.jdbcDriver");
@@ -68,7 +68,7 @@ public class dbManager {
 
 	}
 	
-	public static boolean existe(Connection connection, String nomTable) throws SQLException{
+	public boolean existe(Connection connection, String nomTable) throws SQLException{
 		boolean existe;
 		DatabaseMetaData dmd = connection.getMetaData();
 		ResultSet tables = dmd.getTables(connection.getCatalog(), null, nomTable, null);
@@ -78,5 +78,18 @@ public class dbManager {
 		
 	}
 	
+	public void addUser(String userName, String password) throws java.lang.Exception{
+		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		
+		PreparedStatement stmt = con.prepareStatement("INSERT INTO USER(U_NAME, U_PASSWORD) "
+				+"VALUES(?, ?)");
+		stmt.setString(1, userName);
+		stmt.setString(2, password);
+		
+		
+		int rs = stmt.executeUpdate();
+		
+		stmt.close();
+	}
 	
 }
