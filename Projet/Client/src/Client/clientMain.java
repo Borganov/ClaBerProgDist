@@ -39,7 +39,7 @@ public class clientMain {
 					}
 				}
 			}
-			clSocket = new Socket(ip, 45000);
+			clSocket = new Socket("192.168.43.45", 45000);
 			// reception du message de connexion
 			BufferedReader buffin = new BufferedReader(new InputStreamReader(clSocket.getInputStream()));
 			String messageConnexion;
@@ -146,6 +146,7 @@ public class clientMain {
 						String downloadPath = buffin.readLine();
 
 						// ouverture de la connexion
+						System.out.println(downloadIp);
 						Socket connexionToClient = new Socket(downloadIp, 45002);
 
 					}
