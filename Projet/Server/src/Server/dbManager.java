@@ -47,23 +47,7 @@ public class dbManager {
 			+ "U_ID INTEGER NOT NULL, "
 			+ "FOREIGN KEY (U_ID) REFERENCES USER(U_ID))");
 		}
-		
-
-	
-
-	
-		stmt.execute("SELECT * FROM USER");
-		
-		ResultSet rs = stmt.getResultSet();
-		
-		while(rs.next()) {
-			int id = rs.getInt("U_ID");
-			String name = rs.getString("U_NAME");
-			String password = rs.getString("U_PASSWORD");
-			System.out.println(id + " " +name+ " " +password);
-
-		}
-		
+			
 		stmt.close();
 
 	}
@@ -85,6 +69,21 @@ public class dbManager {
 				+"VALUES(?, ?)");
 		stmt.setString(1, userName);
 		stmt.setString(2, password);
+		
+		
+		int rs = stmt.executeUpdate();
+		
+		stmt.close();
+	}
+	
+	public void addFile(String fileName, String filePath, int userId) throws java.lang.Exception{
+		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		
+		PreparedStatement stmt = con.prepareStatement("INSERT INTO FILE(F_NAME, F_PATH, U_ID) "
+				+"VALUES(?, ?, ?)");
+		stmt.setString(1, fileName);
+		stmt.setString(2, filePath);
+		stmt.setInt(3, userId);
 		
 		
 		int rs = stmt.executeUpdate();

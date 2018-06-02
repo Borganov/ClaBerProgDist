@@ -14,10 +14,18 @@ public class threadMultiClients implements Runnable {
 	private user u;
 	private usersList usersList;
 	private downloadableFilesTab dft = new downloadableFilesTab();
+	private dbManager dbm;
 
 	public threadMultiClients(Socket clientSocketOnServer, usersList usersList) {
 		this.clientSocketOnServer = clientSocketOnServer;
 		this.usersList = usersList;
+		
+		try {
+			dbm = new dbManager();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -215,10 +223,10 @@ public class threadMultiClients implements Runnable {
 						if (message == true) {
 							pout.println("Entrer votre identifiant :");
 							pout.flush();
-						} else
+						} else{
 							pout.println("Identifiant déjà utilisé, entrer un autre identifiant :");
-						pout.flush();
-
+							pout.flush();
+						}
 						// reception de l'identifiant
 						buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
 						newID = buffin.readLine();
@@ -250,8 +258,10 @@ public class threadMultiClients implements Runnable {
 					String ipUser = buffin.readLine();
 					System.out.println(ipUser);
 					// écriture de l'utilisateur
+					dbm.addUser(newID, newPass);
 					BufferedWriter bout = new BufferedWriter(new FileWriter("./usersFile.txt", true));
 					bout.write(newID + ";" + newPass + ";");
+					
 					// bout.newLine();
 					bout.close();
 					// connexion
