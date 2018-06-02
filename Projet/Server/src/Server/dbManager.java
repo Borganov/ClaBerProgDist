@@ -125,9 +125,15 @@ public class dbManager {
 		
 		
 		ResultSet rs = stmt.executeQuery();
-		rs.next();
+		//rs.next();
 		
-		return rs.getInt("U_ID");
+		if(rs.next()==false){
+			return -1;
+		}
+		else{
+			return rs.getInt("U_ID");
+		}
+
 	}
 	
 	public void printFileTable()throws java.lang.Exception {

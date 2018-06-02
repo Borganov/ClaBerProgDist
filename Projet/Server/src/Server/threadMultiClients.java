@@ -109,8 +109,7 @@ public class threadMultiClients implements Runnable {
 								ListIterator<file> cu = currentUserFileList.listIterator();
 								while(cu.hasNext()){
 									fileList.add(cu.next());
-								}
-								//fileList.addAll(currentUserFileList);	 								
+								}								
 							}
 
 							ListIterator<file> fi = fileList.listIterator();
@@ -125,7 +124,7 @@ public class threadMultiClients implements Runnable {
 							String loopEnd = "Terminate";
 							pout.println(loopEnd);
 							pout.flush();
-							//System.out.println(loopEnd);
+
 							
 
 							// reception du choix de téléchargement
@@ -172,75 +171,71 @@ public class threadMultiClients implements Runnable {
 				}
 
 			} else {
-				// enregistrement d'un nouveau client
-//				if (choiceConnexion.equals("2")) {
-//					boolean control = true;
-//					boolean message = true;
-//					String newID;
-//
-//					in = new FileReader("./usersFile.txt");
-//					chain = checkline.split(";");
-//					// boucle de contrôle redondance des ids
-//					do {
-//						control = true;
-//						// demande de l'identifiant
-//						pout = new PrintWriter(clientSocketOnServer.getOutputStream());
-//						if (message == true) {
-//							pout.println("Entrer votre identifiant :");
-//							pout.flush();
-//						} else{
-//							pout.println("Identifiant déjà utilisé, entrer un autre identifiant :");
-//							pout.flush();
-//						}
-//						// reception de l'identifiant
-//						buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
-//						newID = buffin.readLine();
-//						// contrôle de la redondance de l'identifiant
-//						for (int i = 0; i < chain.length; i++) {
-//							if (chain[i].equals(newID)) {
-//								control = false;
-//								message = false;
-//							}
-//							i = i + 1;
-//						}
-//						// envoi des informations à la boucle client
-//						if (control == true) {
-//							pout.println("true");
-//							pout.flush();
-//						} else {
-//							pout.println("false");
-//							pout.flush();
-//						}
-//					} while (control == false);
-//
-//					// demande du mot de passe
-//					pout.println("Enregistrer votre mot de passe");
-//					pout.flush();
-//					// reception du mot de passe
-//					String newPass = buffin.readLine();
-//					System.out.println(newPass);
-//					// reception de l'ip
-//					String ipUser = buffin.readLine();
-//					System.out.println(ipUser);
-//					// écriture de l'utilisateur
-//					dbm.addUser(newID, newPass);
-//					BufferedWriter bout = new BufferedWriter(new FileWriter("./usersFile.txt", true));
-//					bout.write(newID + ";" + newPass + ";");
-//					
-//					// bout.newLine();
-//					bout.close();
-//					// connexion
-//					pout.println("Utilisateur créé");
-//					pout.flush();
-//					pout.println("Veuillez vous connecter pour utiliser nos services");
-//					pout.flush();
-//
-//					clientSocketOnServer.close();
-//				} else {
-//					// fermeture du serveur
-//
-//					clientSocketOnServer.close();
-//				}
+				 //enregistrement d'un nouveau client
+				if (choiceConnexion.equals("2")) {
+					boolean control = true;
+					boolean message = true;
+					String newID;
+
+					// boucle de contrôle redondance des ids
+					control = true;
+					do {
+						// demande de l'identifiant
+						pout = new PrintWriter(clientSocketOnServer.getOutputStream());
+						if (control == true) {
+							pout.println("Entrer votre identifiant :");
+							pout.flush();
+						} else{
+							pout.println("Identifiant déjà utilisé, entrer un autre identifiant :");
+							pout.flush();
+						}
+						// reception de l'identifiant
+						buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
+						newID = buffin.readLine();
+						// contrôle de la redondance de l'identifiant
+						
+						int index=dbm.getIdByLogin(newID);
+						
+						if(index>=0){
+							control = false;
+							System.out.println(control);
+						}else{
+							control = true;
+						}
+						
+						// envoi des informations à la boucle client
+						if (control == true) {
+							pout.println("true");
+							pout.flush();
+						} else {
+							pout.println("false");
+							pout.flush();
+						}
+					} while (control == false);
+					// demande du mot de passe
+					pout.println("Enregistrer votre mot de passe");
+					pout.flush();
+					// reception du mot de passe
+					String newPass = buffin.readLine();
+					System.out.println(newPass);
+					// reception de l'ip
+					String ipUser = buffin.readLine();
+					System.out.println(ipUser);
+					// écriture de l'utilisateur
+					dbm.addUser(newID, newPass);
+
+					// connexion
+					pout.println("Utilisateur créé");
+					pout.flush();
+					pout.println("Veuillez vous connecter pour utiliser nos services");
+					pout.flush();
+
+					clientSocketOnServer.close();
+				} else {
+					// fermeture du serveur
+
+					clientSocketOnServer.close();
+				}
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
