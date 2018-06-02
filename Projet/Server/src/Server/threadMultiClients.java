@@ -151,7 +151,7 @@ public class threadMultiClients implements Runnable {
 									downloadIp = usersList.usersList.get(liu.nextIndex()-1).getIp();
 								}
 							}
-
+							System.out.println(downloadIp);
 							pout.println(downloadIp);
 							pout.flush();
 							pout.println(downloadPath);
