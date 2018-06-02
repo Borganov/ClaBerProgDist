@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Scanner;
@@ -84,6 +85,12 @@ public class clientMain {
 			// lecture du choix de l'utilisateur ou déconnecté
 			String messageChoice = buffin.readLine();
 			System.out.println(messageChoice);
+			
+			//Ouverture du thread d'attente de transfert client client
+			Thread clientConnexionManager = new Thread(new threadClientConnexion());
+			clientConnexionManager.start();
+			System.out.println("Thread Client lancé");
+			
 
 			if (messageChoice
 					.equals("1 pour uploader un fichier | 2 pour downloader un fichier | autre touche pour quitter")) {
@@ -139,6 +146,7 @@ public class clientMain {
 						String downloadPath = buffin.readLine();
 
 						// ouverture de la connexion
+						Socket connexionToClient = new Socket(downloadIp, 45002);
 
 					}
 				}
