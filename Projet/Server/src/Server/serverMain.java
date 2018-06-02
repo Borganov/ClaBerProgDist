@@ -12,6 +12,7 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -20,9 +21,11 @@ import java.util.ListIterator;
 public class serverMain {
 
 	public static void main(String[] args) {
+		
 		// TODO Auto-generated method stub
 		try {
 			dbManager dbm = new dbManager();
+
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

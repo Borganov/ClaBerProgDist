@@ -42,12 +42,6 @@ public class threadMultiClients implements Runnable {
 			BufferedReader buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
 			String choiceConnexion = buffin.readLine();
 
-			// tableau pour contrôle des identifications et enregistrements
-			FileReader in = new FileReader("./usersFile.txt");
-			buffin = new BufferedReader(in);
-
-			String checkline = (buffin.readLine());
-			String[] chain = checkline.split(";");
 
 			// identification du client
 			if (choiceConnexion.equals("1")) {
@@ -71,16 +65,9 @@ public class threadMultiClients implements Runnable {
 				String pass = buffin.readLine();
 
 				// contrôle identifiant/mot de passe
-				boolean allowconnexion = false;
+				boolean allowconnexion = dbm.login(id, pass);
 
-				for (int i = 0; i < chain.length; i++) {
-					if (chain[i].contentEquals(id)) {
-						if (chain[i + 1].equals(pass)) {
-							allowconnexion = true;
-						}
-					}
-					i = i + 1;
-				}
+
 				// connexion si id et pass ok
 				if (allowconnexion == true) {
 					String ipUser = buffin.readLine();
@@ -100,61 +87,30 @@ public class threadMultiClients implements Runnable {
 						pout.println("Entrer le chemin du fichier");
 						pout.flush();
 						String path = buffin.readLine();
-						BufferedWriter bout = new BufferedWriter(new FileWriter("./filesFile.txt", true));
-						bout.write(id + ";" + path + ";");
-						bout.close();
+						pout.println("Entrer nom du fichier");
+						pout.flush();
+						String fileName = buffin.readLine();
+						int uid = dbm.getIdByLogin(id);
+						dbm.addFile(fileName, path, uid );	
 
-						// effaçage de l'utilisateur quand il se déconnecte
+						// effaçage de l'utilisateur et deconnexion de ce dernier
 						usersList.remove(id);
 					} else {
 						if (choiceOption.equals("2")) {
 
-							// transformation du fichier filesFile en tableau
-							FileReader inf = new FileReader("./filesFile.txt");
-							buffin = new BufferedReader(inf);
-							String checklineFiles = (buffin.readLine());
-							String[] chainFiles = checklineFiles.split(";");
-							inf.close();
-
-							// Croisement des utilisateurs connectés avec liste des fichiers pour tableau de
-							// fichiers à téléchargers
-
-//							int x = (chainFiles.length / 2) + 1;
-//							pout.print(x);
-//							pout.flush();
-
-
-							//String[][] downloadableFiles = new String[x][3];
-
-							String[] sharingUsers = new String[chain.length / 2];
-
-							// liste des utilisateurs partageant leur fichiers
-							int l = 0;
-
+							//Liste des utilisateur connecté
+							int uid;
+							String[][] fileList;
 							ListIterator<user> iu = usersList.usersList.listIterator();
 							while (iu.hasNext()) {
-								//if (iu.next().getId().equals(id)) {
-								//} else {
-									sharingUsers[l] = iu.next().getId();
-								//}
-								l++;
+								uid=dbm.getIdByLogin(iu.next().getId());
+								ListIteraor<> currentUserFileList = dbm.getFileByUserId(uid);
+
+								fileList ;
+								 								
 							}
 
-							// création du tableau des fichiers téléchargeable
-							dft.downloadableFiles[0][0] = "Number";
-							dft.downloadableFiles[0][1] = "User";
-							dft.downloadableFiles[0][2] = "File";
-
-							for (int j = 0; j < sharingUsers.length; j++) {
-								for (int k = 0; k < chainFiles.length; k++) {
-									if (chainFiles[k].equals(sharingUsers[j])) {
-										dft.downloadableFiles[l][0] = Integer.toString(l);
-										dft.downloadableFiles[l][1] = chainFiles[k];
-										dft.downloadableFiles[l][2] = chainFiles[k + 1];
-										l++;
-									}
-								}
-							}
+							
 
 							for (int i = 0; i < dft.downloadableFiles.length; i++) {
 								for (int j = 0; j < dft.downloadableFiles[i].length; j++) {

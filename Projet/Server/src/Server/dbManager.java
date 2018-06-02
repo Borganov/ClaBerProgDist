@@ -91,4 +91,58 @@ public class dbManager {
 		stmt.close();
 	}
 	
+	public boolean login(String userName, String password)throws java.lang.Exception{
+		
+		boolean result;
+		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		
+		PreparedStatement stmt = con.prepareStatement("SELECT * FROM USER WHERE"
+				+ " U_NAME = ? "
+				+ "AND U_PASSWORD = ?");
+		
+		stmt.setString(1, userName);
+		stmt.setString(2, password);
+		
+		
+		ResultSet rs = stmt.executeQuery();
+		
+		result = rs.next();
+		
+		stmt.close();
+		
+		return result;
+	}
+
+	public int getIdByLogin(String login)throws java.lang.Exception {
+		// TODO Auto-generated method stub
+		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		
+		PreparedStatement stmt = con.prepareStatement("SELECT U_ID FROM USER WHERE"
+				+ " U_NAME = ? ");
+		
+		stmt.setString(1, login);
+		
+		
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		
+		return rs.getInt("U_ID");
+	}
+	
+	public String[][] getFileByUserId(int userId)throws java.lang.Exception {
+		// TODO Auto-generated method stub
+		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		
+		PreparedStatement stmt = con.prepareStatement("SELECT F_NAME FROM FILE WHERE"
+				+ " U_ID = ? ");
+		
+		stmt.setInt(1, userId);
+		
+		
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		
+		return rs.getInt("U_ID");
+	}
+	
 }

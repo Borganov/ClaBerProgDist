@@ -97,6 +97,12 @@ public class clientMain {
 					String path = sc.nextLine();
 					pout.println(path);
 					pout.flush();
+					String messageFileName = buffin.readLine();
+					System.out.println(messageFileName);
+					String fileName = sc.nextLine();
+					pout.println(fileName);
+					pout.flush();
+					
 				} else {
 					if (choice.equals("2")) {
 
