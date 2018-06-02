@@ -40,6 +40,8 @@ public class threadClientConnexion implements Runnable{
 				}
 			}
 			
+			socketServerClientClient = new ServerSocket(45002, 5, serverAddress);
+			
 
 	
 		} catch (IOException e) {
@@ -54,7 +56,7 @@ public class threadClientConnexion implements Runnable{
 		
 		
 		try {
-			socketServerClientClient = new ServerSocket(45002, 5, serverAddress);
+
 
 			while(true){
 				socketClientClient = socketServerClientClient.accept();

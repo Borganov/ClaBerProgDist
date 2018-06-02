@@ -77,6 +77,7 @@ public class clientMain {
 			String ipString = ip.toString();
 			pout.println(ipString);
 			pout.flush();
+			System.out.println("IP envoyé "+ipString);
 
 			// lecture du message statut connexion connecté/pas connecté
 			String connectionStatus;
