@@ -109,26 +109,24 @@ public class clientMain {
 //						int x = buffin.read();
 //						System.out.println(x);
 						// reception des fichiers téléchargeable
-						String[][] downloadableFiles = new String[4][3];
 
 						System.out.println("Voici la liste des fichiers disponibles :");
 						System.out.println();
-
-						for (int i = 0; i < downloadableFiles.length; i++) {
-							for (int j = 0; j < downloadableFiles[i].length; j++) {
-								String a = buffin.readLine();
-								downloadableFiles[i][j] = a;
+						
+						String messageFileDL="Continue";
+						String[] FileDL;
+						
+						boolean out = false;
+						do{
+							messageFileDL = buffin.readLine();
+							if(messageFileDL.equals("Terminate")){
+								out = true;
+							}else{
+								System.out.println(messageFileDL);
 							}
-						}
+							
+						}while(out == false );
 
-						// impression des fichier téléchargable
-						for (int i = 0; i < downloadableFiles.length; i++) {
-							for (int j = 0; j < downloadableFiles[i].length; j++) {
-								System.out.print(downloadableFiles[i][j] + "\t"  +"|" +"\t");
-							}
-							System.out.println();
-							System.out.println("--------------------------------------------------");
-						}
 
 						System.out.println();
 						System.out.println("Entrer le numéro du fichier que vous voulez télécharger :");

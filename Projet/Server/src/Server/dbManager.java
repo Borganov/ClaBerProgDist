@@ -1,6 +1,7 @@
 package Server;
 
 import java.sql.*;
+import java.util.ArrayList;
 public class dbManager {
 	
 	private  Connection con;
@@ -129,20 +130,46 @@ public class dbManager {
 		return rs.getInt("U_ID");
 	}
 	
-	public String[][] getFileByUserId(int userId)throws java.lang.Exception {
+	public void printFileTable()throws java.lang.Exception {
 		// TODO Auto-generated method stub
 		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 		
-		PreparedStatement stmt = con.prepareStatement("SELECT F_NAME FROM FILE WHERE"
+		PreparedStatement stmt = con.prepareStatement("SELECT * FROM FILE");
+		
+		
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()){
+			System.out.println(rs.getInt("F_ID")+" - "+rs.getString("F_NAME")+" - "+rs.getString("F_PATH")+" - "+rs.getString("U_ID"));
+		}
+		
+		System.out.println(rs.toString());
+	}
+	
+	public ArrayList<file> getFileByUserId(int userId)throws java.lang.Exception {
+		// TODO Auto-generated method stub
+		stmt=con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		
+		PreparedStatement stmt = con.prepareStatement("SELECT F_ID, F_NAME, F_PATH FROM FILE WHERE"
 				+ " U_ID = ? ");
 		
 		stmt.setInt(1, userId);
 		
 		
 		ResultSet rs = stmt.executeQuery();
-		rs.next();
+		ArrayList<file> result = new ArrayList<file>();
+		while(rs.next()){
+			int id = rs.getInt("F_ID");
+			String name = rs.getString("F_NAME");
+			String path = rs.getString("F_PATH");
+			
+			
+			
+			file f = new file(id, name, path);
+			result.add(f);
+		}
 		
-		return rs.getInt("U_ID");
+		return result;
 	}
 	
 }

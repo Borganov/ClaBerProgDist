@@ -25,6 +25,8 @@ public class serverMain {
 		// TODO Auto-generated method stub
 		try {
 			dbManager dbm = new dbManager();
+			//dbm.printFileTable();
+			//return;
 
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
