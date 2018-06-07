@@ -38,7 +38,6 @@ public class serverMain {
 		InetAddress serverAddress = null;
 
 		ServerSocket mySkserver;
-		Socket srvSocket;
 
 		// initialisation du port1
 		int port1 = 45000;

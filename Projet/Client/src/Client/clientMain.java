@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Scanner;
 
+
+
 public class clientMain {
 
 	public static void main(String[] args) {
@@ -19,6 +21,7 @@ public class clientMain {
 		InetAddress ip = null;
 
 		Socket clSocket;
+		ServerSocket myClserver;
 
 		// le client cherche la même address ip que le server
 		try {
@@ -77,84 +80,19 @@ public class clientMain {
 			String ipString = ip.toString();
 			pout.println(ipString);
 			pout.flush();
-			System.out.println("IP envoyé "+ipString);
-
-			// lecture du message statut connexion connecté/pas connecté
-			String connectionStatus;
-			connectionStatus = buffin.readLine();
-			System.out.println(connectionStatus);
-			// lecture du choix de l'utilisateur ou déconnecté
-			String messageChoice = buffin.readLine();
-			System.out.println(messageChoice);
 			
+			Thread threadClient = new Thread(new threadClient(clSocket));
+			threadClient.start();
 			//Ouverture du thread d'attente de transfert client client
-			Thread clientConnexionManager = new Thread(new threadClientConnexion());
-			clientConnexionManager.start();
-			System.out.println("Thread Client lancé");
+			myClserver = new ServerSocket(45002, 5, ip);
 			
-
-			if (messageChoice
-					.equals("1 pour uploader un fichier | 2 pour downloader un fichier | autre touche pour quitter")) {
-				String choice = sc.nextLine();
-				pout.println(choice);
-				pout.flush();
-
-				if (choice.equals("1")) {
-					String messagePath = buffin.readLine();
-					System.out.println(messagePath);
-					String path = sc.nextLine();
-					pout.println(path);
-					pout.flush();
-					String messageFileName = buffin.readLine();
-					System.out.println(messageFileName);
-					String fileName = sc.nextLine();
-					pout.println(fileName);
-					pout.flush();
-					
-				} else {
-					if (choice.equals("2")) {
-
-//						int x = buffin.read();
-//						System.out.println(x);
-						// reception des fichiers téléchargeable
-
-						System.out.println("Voici la liste des fichiers disponibles :");
-						System.out.println();
-						
-						String messageFileDL="Continue";
-						String[] FileDL;
-						
-						boolean out = false;
-						do{
-							messageFileDL = buffin.readLine();
-							if(messageFileDL.equals("Terminate")){
-								out = true;
-							}else{
-								System.out.println(messageFileDL);
-							}
-							
-						}while(out == false );
-
-
-						System.out.println();
-						System.out.println("Entrer le numéro du fichier que vous voulez télécharger :");
-						String downloadFileNumber = sc.nextLine();
-						pout.println(downloadFileNumber);
-						pout.flush();
-
-						// reception de l'ip et du chemin pour le téléchargement
-						String downloadIp = buffin.readLine();
-						String downloadPath = buffin.readLine();
-
-						// ouverture de la connexion
-						System.out.println(downloadIp);
-						Socket connexionToClient = new Socket(downloadIp, 45002);
-
-					}
-				}
+			while (true) {
+				Socket clientclientSocket = myClserver.accept();
+				Thread clientclient = new Thread(new threadClientConnexion(clientclientSocket));
+				clientclient.start();
 			}
 
-			clSocket.close();
+			//clSocket.close();
 
 		} catch (Exception e) {
 			// TODO: handle exception

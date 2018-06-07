@@ -8,68 +8,17 @@ import java.net.Socket;
 import java.util.Enumeration;
 
 public class threadClientConnexion implements Runnable{
-	
-	Enumeration<NetworkInterface> allNetworkInterfaces;
-	Enumeration<InetAddress> allInetAddresses;
-	InetAddress serverAddress = null;
-	
-	Socket socketClientClient;
-	ServerSocket socketServerClientClient;
-	private String path;
-	
-	public threadClientConnexion(){
+	private Socket clientSocketOnClient;
+	public threadClientConnexion(Socket clientSocketOnClient){
 
-		
-		try {
-			
-			allNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
+		this.clientSocketOnClient = clientSocketOnClient;
 
-			while (allNetworkInterfaces.hasMoreElements()) {
-				NetworkInterface ni = allNetworkInterfaces.nextElement();
-
-				allInetAddresses = ni.getInetAddresses();
-
-				while (allInetAddresses.hasMoreElements()) {
-					InetAddress ia = allInetAddresses.nextElement();
-
-					if (!ia.isLoopbackAddress()) {
-						if (!ia.isLinkLocalAddress()) {
-							serverAddress = ia;
-						}
-					}
-				}
-			}
-			
-			socketServerClientClient = new ServerSocket(45002, 5, serverAddress);
-			
-
-	
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
-		
-		try {
-
-
-			while(true){
-				socketClientClient = socketServerClientClient.accept();
-				System.out.println("un client se connecte au thread ClientConnexion");
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-
-
-		
+		System.out.println("un client est connecté");
 		
 	}
 
