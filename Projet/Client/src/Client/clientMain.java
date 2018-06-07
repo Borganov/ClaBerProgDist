@@ -10,8 +10,6 @@ import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Scanner;
 
-
-
 public class clientMain {
 
 	public static void main(String[] args) {
@@ -80,19 +78,19 @@ public class clientMain {
 			String ipString = ip.toString();
 			pout.println(ipString);
 			pout.flush();
-			
+
 			Thread threadClient = new Thread(new threadClient(clSocket));
 			threadClient.start();
-			//Ouverture du thread d'attente de transfert client client
+			// Ouverture du thread d'attente de transfert client client
 			myClserver = new ServerSocket(45002, 5, ip);
-			
+
 			while (true) {
 				Socket clientclientSocket = myClserver.accept();
 				Thread clientclient = new Thread(new threadClientConnexion(clientclientSocket));
 				clientclient.start();
 			}
 
-			//clSocket.close();
+			// clSocket.close();
 
 		} catch (Exception e) {
 			// TODO: handle exception

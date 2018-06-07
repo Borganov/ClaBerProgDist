@@ -1,23 +1,25 @@
 package Client;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class threadClient implements Runnable{
+public class threadClient implements Runnable {
 	private Socket clientSocketOnClient;
 
-	public threadClient(Socket clientSocketOnClient){
-
+	public threadClient(Socket clientSocketOnClient) {
 		this.clientSocketOnClient = clientSocketOnClient;
-
 	}
-	
+
 	@Override
 	public void run() {
-	// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 		try {
 			BufferedReader buffin = new BufferedReader(new InputStreamReader(clientSocketOnClient.getInputStream()));
 			PrintWriter pout = new PrintWriter(clientSocketOnClient.getOutputStream());
@@ -47,28 +49,27 @@ public class threadClient implements Runnable{
 					String fileName = sc.nextLine();
 					pout.println(fileName);
 					pout.flush();
-					
+
 				} else {
 					if (choice.equals("2")) {
 
 						// reception des fichiers téléchargeable
 						System.out.println("Voici la liste des fichiers disponibles :");
 						System.out.println();
-						
-						String messageFileDL="Continue";
+
+						String messageFileDL = "Continue";
 						String[] FileDL;
-						
+
 						boolean out = false;
-						do{
+						do {
 							messageFileDL = buffin.readLine();
-							if(messageFileDL.equals("Terminate")){
+							if (messageFileDL.equals("Terminate")) {
 								out = true;
-							}else{
+							} else {
 								System.out.println(messageFileDL);
 							}
-							
-						}while(out == false );
 
+						} while (out == false);
 
 						System.out.println();
 						System.out.println("Entrer le numéro du fichier que vous voulez télécharger :");
@@ -79,21 +80,34 @@ public class threadClient implements Runnable{
 						// reception de l'ip et du chemin pour le téléchargement
 						String downloadIpSlashed = buffin.readLine();
 						String downloadPath = buffin.readLine();
-						
+
 						String downloadIp = downloadIpSlashed.substring(1);
 
 						// ouverture de la connexion
-						System.out.println(downloadIp);
-						Socket connexionToClient = new Socket("192.168.1.106", 45002);
+						Socket connexionToClient = new Socket(downloadIp, 45002);
+						PrintWriter cpout = new PrintWriter(connexionToClient.getOutputStream());
+						pout.println(downloadPath);
+						pout.flush();
+						
+						int bytes;
+						File f = new File("C:/Users/Yann/Desktop/usersFile.txt");
 
+
+							InputStream in = connexionToClient.getInputStream();
+
+							OutputStream output = new FileOutputStream(f);
+
+							byte[] buffer = new byte[1024];
+							while ((bytes = in.read(buffer)) != -1) {
+								output.write(buffer, 0, bytes);
+							}
+							output.close();
 					}
 				}
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-
 
 	}
 

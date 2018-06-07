@@ -21,12 +21,12 @@ import java.util.ListIterator;
 public class serverMain {
 
 	public static void main(String[] args) {
-		
+
 		// TODO Auto-generated method stub
 		try {
 			dbManager dbm = new dbManager();
-			//dbm.printFileTable();
-			//return;
+			// dbm.printFileTable();
+			// return;
 
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -66,7 +66,7 @@ public class serverMain {
 
 			mySkserver = new ServerSocket(port1, 5, serverAddress);
 			usersList usersList = new usersList();
-			
+
 			while (true) {
 				Socket clientSocket = mySkserver.accept();
 				Thread multiClients = new Thread(new threadMultiClients(clientSocket, usersList));
