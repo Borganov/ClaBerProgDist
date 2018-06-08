@@ -94,12 +94,12 @@ public class threadClient implements Runnable {
 						File f = new File(filePath);
 
 
-							InputStream in = connexionToClient.getInputStream();
+							InputStream input = connexionToClient.getInputStream();
 
 							OutputStream output = new FileOutputStream(f);
 
 							byte[] buffer = new byte[1024];
-							while ((bytes = in.read(buffer)) != -1) {
+							while ((bytes = input.read(buffer)) != -1) {
 								output.write(buffer, 0, bytes);
 							}
 							output.close();
