@@ -90,7 +90,8 @@ public class threadClient implements Runnable {
 						pout.flush();
 						
 						int bytes;
-						File f = new File("C:/Users/Yann/Desktop/usersFile.txt");
+						String filePath = null;
+						File f = new File(filePath);
 
 
 							InputStream in = connexionToClient.getInputStream();
