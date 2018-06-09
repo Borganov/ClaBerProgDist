@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class threadClientConnexion implements Runnable {
@@ -20,14 +21,22 @@ public class threadClientConnexion implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		sentFile("C:/Users/Yann/Documents/usersFile.txt");
+		sentFile("C:/Users/Yann/Documents/HES/PacmanSion2026.pptx");
 
 	}
 
 	public void sentFile(String sourcePath) {
 		try {
+			int fileLength;
+			
 			File f = new File(sourcePath);
-			byte[] bytes = new byte[(int) f.length()];
+			
+			fileLength=(int) f.length();
+			
+			byte[] bytes = new byte[fileLength];
+			PrintWriter pout = new PrintWriter(clientSocketOnClient.getOutputStream());
+			pout.println(fileLength);
+			pout.flush();
 
 			FileInputStream fis = new FileInputStream(f);
 			BufferedInputStream bis = new BufferedInputStream(fis);

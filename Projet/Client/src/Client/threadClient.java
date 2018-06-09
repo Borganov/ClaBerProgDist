@@ -90,19 +90,30 @@ public class threadClient implements Runnable {
 						pout.flush();
 						
 						int bytes;
-						String filePath = null;
+						String filePath = "C:/Users/Yann/Desktop/PacmanSion2026.pptx";
 						File f = new File(filePath);
 
 
 							InputStream input = connexionToClient.getInputStream();
 
 							OutputStream output = new FileOutputStream(f);
+							
+							BufferedReader cbuffin = new BufferedReader(new InputStreamReader(connexionToClient.getInputStream()));
+							int fileLength = cbuffin.read();
+							int percentage = 0;
+							int percentageBytes = 0;
 
 							byte[] buffer = new byte[1024];
 							while ((bytes = input.read(buffer)) != -1) {
 								output.write(buffer, 0, bytes);
+								percentage = percentageBytes/fileLength;
+								System.out.print("|");
+								percentageBytes=percentageBytes+1024;
 							}
+							System.out.print(" 100%");
 							output.close();
+							System.out.println();
+							System.out.println("Téléchargement terminé !");
 					}
 				}
 			}

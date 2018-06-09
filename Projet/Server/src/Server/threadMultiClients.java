@@ -145,23 +145,16 @@ public class threadMultiClients implements Runnable {
 
 							String downloadIp = null;
 							String userName = dbm.getUserNameByUserId(downloadUserId);
-							System.out.println("userName" + userName);
 
 							ListIterator<user> liu = usersList.usersList.listIterator();
 							while(liu.hasNext()){
 								if(liu.next().getId().equals(userName))
 								{
 									downloadIp = usersList.usersList.get(liu.nextIndex()-1).getIp();
-									System.out.println("ip : " + usersList.usersList.get(liu.nextIndex()-1).getIp());
-
-									System.out.println("id : " + usersList.usersList.get(liu.nextIndex()-1).getId());
 								}
 
 
 							}
-							
-							System.out.println(downloadIp);
-							System.out.println(downloadPath);
 							
 							pout.println(downloadIp);
 							pout.flush();
