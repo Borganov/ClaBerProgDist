@@ -28,6 +28,7 @@ public class threadClientConnexion implements Runnable {
 	public void sentFile(String sourcePath) {
 		try {
 			int fileLength;
+
 			
 			File f = new File(sourcePath);
 			
@@ -35,8 +36,11 @@ public class threadClientConnexion implements Runnable {
 			
 			byte[] bytes = new byte[fileLength];
 			PrintWriter pout = new PrintWriter(clientSocketOnClient.getOutputStream());
-			pout.println(fileLength);
+			String fileLengthString;
+			fileLengthString = Integer.toString(fileLength);
+			pout.println(fileLengthString);
 			pout.flush();
+			
 
 			FileInputStream fis = new FileInputStream(f);
 			BufferedInputStream bis = new BufferedInputStream(fis);
