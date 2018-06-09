@@ -90,7 +90,7 @@ public class threadClient implements Runnable {
 						pout.flush();
 						
 						int bytes;
-						String filePath = "C:/Users/Yann/Desktop/PacmanSion2026.pptx";
+						String filePath = "C:/Users/Alexandre Berclaz/Desktop/PacmanSion2026.pptx";
 						File f = new File(filePath);
 
 
@@ -99,15 +99,25 @@ public class threadClient implements Runnable {
 							OutputStream output = new FileOutputStream(f);
 							
 							BufferedReader cbuffin = new BufferedReader(new InputStreamReader(connexionToClient.getInputStream()));
-							int fileLength = cbuffin.read();
+							String fileLengthString = cbuffin.readLine();
+							int fileLength = Integer.parseInt(fileLengthString);
 							int percentage = 0;
 							int percentageBytes = 0;
+							int ProgressBarStep = fileLength / 20;
+							int nextStep = 0;
+							int ProgressBarCurrentState = 0;
+							System.out.println("Début du téléchargement ! Veuillez patienter");
 
 							byte[] buffer = new byte[1024];
 							while ((bytes = input.read(buffer)) != -1) {
 								output.write(buffer, 0, bytes);
 								percentage = percentageBytes/fileLength;
-								System.out.print("|");
+								ProgressBarCurrentState +=1024;
+								if(ProgressBarCurrentState > nextStep){
+									System.out.print("|");
+									nextStep = nextStep + ProgressBarStep;
+								}
+								
 								percentageBytes=percentageBytes+1024;
 							}
 							System.out.print(" 100%");
