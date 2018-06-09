@@ -1,10 +1,12 @@
 package Client;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -21,7 +23,14 @@ public class threadClientConnexion implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		sentFile("C:/Users/Yann/Documents/HES/PacmanSion2026.pptx");
+		try {
+			BufferedReader buffin = new BufferedReader(new InputStreamReader(clientSocketOnClient.getInputStream()));
+			String path = buffin.readLine();
+			sentFile(path);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 
 	}
 

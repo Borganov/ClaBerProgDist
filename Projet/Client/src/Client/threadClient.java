@@ -80,50 +80,61 @@ public class threadClient implements Runnable {
 						// reception de l'ip et du chemin pour le téléchargement
 						String downloadIpSlashed = buffin.readLine();
 						String downloadPath = buffin.readLine();
+						String downloadFileName = buffin.readLine();
 
 						String downloadIp = downloadIpSlashed.substring(1);
 
 						// ouverture de la connexion
 						Socket connexionToClient = new Socket(downloadIp, 45002);
 						PrintWriter cpout = new PrintWriter(connexionToClient.getOutputStream());
-						pout.println(downloadPath);
-						pout.flush();
+						cpout.println(downloadPath);
+						cpout.flush();
 						
+						//récupération de l'extention du fichier
+						int indexExtentionFichierDebut = downloadPath.lastIndexOf(".");
+						int indexExtentionFichierFin = downloadPath.length();
+						String extention = downloadPath.substring(indexExtentionFichierDebut, indexExtentionFichierFin);
+						
+						System.out.println(extention);
+
 						int bytes;
-						String filePath = "C:/Users/Alexandre Berclaz/Desktop/PacmanSion2026.pptx";
+						
+						String filePath = System.getProperty("user.home") + System.getProperty("file.separator") +"Downloads"+System.getProperty("file.separator") + downloadFileName + extention ;
+
 						File f = new File(filePath);
 
+						InputStream input = connexionToClient.getInputStream();
 
-							InputStream input = connexionToClient.getInputStream();
+						OutputStream output = new FileOutputStream(f);
 
-							OutputStream output = new FileOutputStream(f);
-							
-							BufferedReader cbuffin = new BufferedReader(new InputStreamReader(connexionToClient.getInputStream()));
-							String fileLengthString = cbuffin.readLine();
-							int fileLength = Integer.parseInt(fileLengthString);
-							int percentage = 0;
-							int percentageBytes = 0;
-							int ProgressBarStep = fileLength / 20;
-							int nextStep = 0;
-							int ProgressBarCurrentState = 0;
-							System.out.println("Début du téléchargement ! Veuillez patienter");
+						BufferedReader cbuffin = new BufferedReader(
+								new InputStreamReader(connexionToClient.getInputStream()));
+						String fileLengthString = cbuffin.readLine();
+						int fileLength = Integer.parseInt(fileLengthString);
 
-							byte[] buffer = new byte[1024];
-							while ((bytes = input.read(buffer)) != -1) {
-								output.write(buffer, 0, bytes);
-								percentage = percentageBytes/fileLength;
-								ProgressBarCurrentState +=1024;
-								if(ProgressBarCurrentState > nextStep){
-									System.out.print("|");
-									nextStep = nextStep + ProgressBarStep;
-								}
-								
-								percentageBytes=percentageBytes+1024;
+						int percentageBytes = 0;
+						int ProgressBarStep = fileLength / 20;
+						int nextStep = 0;
+						int ProgressBarCurrentState = 0;
+						
+						System.out.println("Début du téléchargement ! Veuillez patienter");
+
+						byte[] buffer = new byte[1024];
+						while ((bytes = input.read(buffer)) != -1) {
+							output.write(buffer, 0, bytes);
+
+							ProgressBarCurrentState += 1024;
+							if (ProgressBarCurrentState > nextStep) {
+								System.out.print("|");
+								nextStep = nextStep + ProgressBarStep;
 							}
-							System.out.print(" 100%");
-							output.close();
-							System.out.println();
-							System.out.println("Téléchargement terminé !");
+
+							percentageBytes = percentageBytes + 1024;
+						}
+						System.out.print(" 100%");
+						output.close();
+						System.out.println();
+						System.out.println("Fichier disponaible dans " + filePath);
 					}
 				}
 			}

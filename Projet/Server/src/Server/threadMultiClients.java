@@ -134,12 +134,14 @@ public class threadMultiClients implements Runnable {
 							// recherche de l'ip et du chemin du fichier à télécharger
 
 							String downloadPath = null;
+							String downloadFileName = null;
 							int downloadUserId = -1;
 							ListIterator<file> fii = fileList.listIterator();
 							while(fii.hasNext()){
 								if(fii.next().getUid()==Integer.parseInt(downloadChoice)) {
 									downloadPath = fileList.get(fii.nextIndex()-1).getPath();
 									downloadUserId = fileList.get(fii.nextIndex()-1).getUid();
+									downloadFileName = fileList.get(fii.nextIndex()-1).getName();
 								}
 							}
 
@@ -160,6 +162,9 @@ public class threadMultiClients implements Runnable {
 							pout.flush();
 							pout.println(downloadPath);
 							pout.flush();
+							pout.println(downloadFileName);
+							pout.flush();
+							
 
 							// effaçage de l'utilisateur quand il se déconnecte
 							usersList.remove(id);

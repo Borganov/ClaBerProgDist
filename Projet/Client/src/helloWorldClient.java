@@ -8,7 +8,12 @@ public class helloWorldClient {
 		
 		System.out.println("Client branche develop");
 		
-
+		String userHome = System.getProperty("user.home");
+		
+		String fileSeparator = System.getProperty("file.separator");
+		
+		System.out.println(userHome);
+		System.out.println(fileSeparator);
 	}
 
 }
