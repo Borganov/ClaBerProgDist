@@ -99,7 +99,7 @@ public class threadClient implements Runnable {
 
 						int bytes;
 						
-						String filePath = System.getProperty("user.home") + System.getProperty("file.separator") +"Downloads"+System.getProperty("file.separator") + downloadFileName + extention ;
+						String filePath = System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar"+System.getProperty("file.separator") + downloadFileName + extention ;
 
 						File f = new File(filePath);
 
