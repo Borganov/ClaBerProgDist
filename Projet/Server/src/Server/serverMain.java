@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class serverMain {
 
@@ -32,6 +34,7 @@ public class serverMain {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
 
 		Enumeration<NetworkInterface> allNetworkInterfaces;
 		Enumeration<InetAddress> allInetAddresses;
@@ -69,6 +72,7 @@ public class serverMain {
 
 			while (true) {
 				Socket clientSocket = mySkserver.accept();
+				Logs mylogger = new Logs("Test", 1);
 				Thread multiClients = new Thread(new threadMultiClients(clientSocket, usersList));
 
 				multiClients.start();
