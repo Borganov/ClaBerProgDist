@@ -55,6 +55,7 @@ public class threadMultiClients implements Runnable {
 				// reception identifiant
 				buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
 				String id = buffin.readLine();
+
 				/* pour ne pas qu'il rentre dans la boucle destinée au contrôle de
 				l'enregistrement destiné à l'enregistrement*/
 				pout.println("true");
@@ -80,6 +81,8 @@ public class threadMultiClients implements Runnable {
 
 					pout.println("Bienvenu sur ClaBer server" + " " + id);
 					pout.flush();
+					loggerManager test = new loggerManager("test");
+					test.setLoggs(1, id+" s'est connecté avec succès");
 					pout.println(
 							"1 pour uploader un fichier | 2 pour downloader un fichier | autre touche pour quitter");
 					pout.flush();

@@ -72,7 +72,6 @@ public class serverMain {
 
 			while (true) {
 				Socket clientSocket = mySkserver.accept();
-				Logs mylogger = new Logs("Test", 1);
 				Thread multiClients = new Thread(new threadMultiClients(clientSocket, usersList));
 
 				multiClients.start();
