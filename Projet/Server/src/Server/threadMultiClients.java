@@ -19,16 +19,19 @@ public class threadMultiClients implements Runnable {
 	private usersList usersList;
 	private downloadableFilesTab dft = new downloadableFilesTab();
 	private dbManager dbm;
+	loggerManager loggerMgr; 
 
 	public threadMultiClients(Socket clientSocketOnServer, usersList usersList) {
 		this.clientSocketOnServer = clientSocketOnServer;
 		this.usersList = usersList;
+		this.loggerMgr = new loggerManager(getClass().getName());
 
 		try {
 			dbm = new dbManager();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			loggerMgr.setLoggs(3, "Database failure");
 		}
 
 	}
@@ -37,6 +40,7 @@ public class threadMultiClients implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
+			
 			// envoi des choix lors de la connexion du client
 			PrintWriter pout = new PrintWriter(clientSocketOnServer.getOutputStream());
 			pout.println("1 pour se connecter | 2 pour s'enregistrer | autre touche pour quitter");
@@ -93,8 +97,8 @@ public class threadMultiClients implements Runnable {
 
 					pout.println("Bienvenu sur ClaBer server" + " " + id);
 					pout.flush();
-					loggerManager test = new loggerManager("test");
-					test.setLoggs(1, id + " s'est connecté avec succès");
+
+					loggerMgr.setLoggs(1, id + " s'est connecté avec succès");
 					pout.println(
 							"1 pour uploader un fichier | 2 pour downloader un fichier | autre touche pour quitter");
 					pout.flush();
@@ -113,6 +117,10 @@ public class threadMultiClients implements Runnable {
 
 						// effaçage de l'utilisateur et deconnexion de ce dernier
 						usersList.remove(id);
+						//log info que user disconnect
+						loggerMgr.setLoggs(1, id + " s'est déconnecté");
+						//Fermeture socket
+						clientSocketOnServer.close();
 					} else {
 						if (choiceOption.equals("2")) {
 
@@ -122,30 +130,46 @@ public class threadMultiClients implements Runnable {
 							ArrayList<file> fileList = new ArrayList<file>();
 							ListIterator<user> iu = usersList.usersList.listIterator();
 							while (iu.hasNext()) {
-								uid = dbm.getIdByLogin(iu.next().getId());
-								ArrayList<file> currentUserFileList = dbm.getFileByUserId(uid);
-								ListIterator<file> cu = currentUserFileList.listIterator();
-								while (cu.hasNext()) {
+								if(!iu.next().getId().equals(id)){
+									iu.previous();
+									uid = dbm.getIdByLogin(iu.next().getId());
+									ArrayList<file> currentUserFileList = dbm.getFileByUserId(uid);
+									ListIterator<file> cu = currentUserFileList.listIterator();
+									while (cu.hasNext()) {
 
 									fileList.add(cu.next());
 
+									}
 								}
+
 
 							}
 
 							ListIterator<file> fi = fileList.listIterator();
-
-							while (fi.hasNext()) {
-								fi.next();
-								String sendLine = fileList.get(fi.nextIndex() - 1).getUid() + " - "
-										+ fileList.get(fi.nextIndex() - 1).getName();
-								pout.println(sendLine);
+							
+							if(!fi.hasNext()){
+								String NoDownloadableFile = "Aucun fichier";
+								pout.println(NoDownloadableFile);
 								pout.flush();
-							}
+								usersList.remove(id);
+							}else{
+								while (fi.hasNext()) {
+									fi.next();
+									String sendLine = fileList.get(fi.nextIndex() - 1).getUid() + " - "
+											+ fileList.get(fi.nextIndex() - 1).getName();
+									pout.println(sendLine);
+									pout.flush();
+								}
 
+
+							}
+							
 							String loopEnd = "Terminate";
 							pout.println(loopEnd);
 							pout.flush();
+							
+
+
 
 							// reception du choix de téléchargement
 							String downloadChoice = buffin.readLine();
@@ -184,9 +208,13 @@ public class threadMultiClients implements Runnable {
 
 							// effaçage de l'utilisateur quand il se déconnecte
 							usersList.remove(id);
+							loggerMgr.setLoggs(1, id + " s'est déconnecté");
+							clientSocketOnServer.close();
 
 						} else {
-							System.out.println("quit");
+							loggerMgr.setLoggs(1, id + " give wrong command");
+							clientSocketOnServer.close();
+							
 						}
 					}
 
@@ -196,6 +224,8 @@ public class threadMultiClients implements Runnable {
 					pout.flush();
 					pout.println("Vous avez été déconnecté !");
 					pout.flush();
+					loggerMgr.setLoggs(1, id + " wrong password or login");
+					clientSocketOnServer.close();
 				}
 
 			} else {
@@ -259,6 +289,8 @@ public class threadMultiClients implements Runnable {
 					pout.flush();
 
 					clientSocketOnServer.close();
+					loggerMgr.setLoggs(1, newID + " register");
+
 				} else {
 					// fermeture du serveur
 
@@ -267,6 +299,7 @@ public class threadMultiClients implements Runnable {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			loggerMgr.setLoggs(3, "MultiThreading FatalError");
 		}
 	}
 

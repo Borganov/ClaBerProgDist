@@ -1,24 +1,10 @@
 package Server;
 
-import java.awt.List;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.sql.ResultSet;
-import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class serverMain {
 
@@ -77,11 +63,11 @@ public class serverMain {
 
 			}
 
-			// mySkserver.close();
-			// clientSocket.close();
+
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			
 		}
 	}
 

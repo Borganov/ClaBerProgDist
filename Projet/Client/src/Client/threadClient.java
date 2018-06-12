@@ -63,6 +63,11 @@ public class threadClient implements Runnable {
 						boolean out = false;
 						do {
 							messageFileDL = buffin.readLine();
+							//Si aucun fichier n'est téléchargeable on ferme tout
+							if(messageFileDL.equals("Aucun fichier")){
+								clientSocketOnClient.close();
+							}
+							
 							if (messageFileDL.equals("Terminate")) {
 								out = true;
 							} else {
