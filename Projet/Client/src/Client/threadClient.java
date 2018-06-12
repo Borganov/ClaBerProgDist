@@ -112,8 +112,6 @@ public class threadClient implements Runnable {
 							String extention = downloadPath.substring(indexExtentionFichierDebut,
 									indexExtentionFichierFin);
 
-							System.out.println(extention);
-
 							int bytes;
 
 							String filePath = System.getProperty("user.home") + System.getProperty("file.separator")
