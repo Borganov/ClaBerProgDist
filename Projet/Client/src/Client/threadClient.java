@@ -152,12 +152,10 @@ public class threadClient implements Runnable {
 							System.out.println();
 							System.out.println("Fichier disponible dans " + filePath);
 							clientSocketOnClient.close();
-							connexionToClient.close();
 							sc.close();
 						} else {
 							System.out.println("Téléchargement impossible, source non existante");
 							clientSocketOnClient.close();
-							connexionToClient.close();
 							sc.close();
 						}
 
