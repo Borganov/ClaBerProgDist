@@ -180,6 +180,7 @@ public class threadMultiClients implements Runnable {
 							pout.flush();
 							
 
+
 							// effaçage de l'utilisateur quand il se déconnecte
 							usersList.remove(id);
 

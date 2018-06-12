@@ -98,8 +98,6 @@ public class threadClient implements Runnable {
 						
 						String fileVerificator = cbuffin.readLine();
 						
-						System.out.println(fileVerificator);
-						
 						if(fileVerificator.equals("true")) {
 							
 							//récupération de l'extention du fichier

@@ -5,7 +5,7 @@ import java.util.ListIterator;
 
 public class usersList {
 
-	ArrayList<user> usersList = new ArrayList<user>();
+	public ArrayList<user> usersList = new ArrayList<user>();
 
 	synchronized public void add(user u) {
 		usersList.add(u);
@@ -15,8 +15,9 @@ public class usersList {
 		int index = 0;
 		ListIterator<user> iu = usersList.listIterator();
 		while (iu.hasNext()) {
-			if (iu.next().getId().equals(id)) {
-				index = iu.nextIndex();
+			if(iu.next().getId().equals(id)) {
+			index = ((iu.nextIndex()-1));
+
 			}
 		}
 		usersList.remove(index);
