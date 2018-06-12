@@ -61,7 +61,7 @@ public class clientMain {
 			pout.println(choiceConnexion);
 			pout.flush();
 			
-			if(!choiceConnexion.equals("1") || !choiceConnexion.equals("2") ){
+			if(!choiceConnexion.equals("1") && !choiceConnexion.equals("2") ){
 				System.out.println("Au revoir");
 				return;
 				
