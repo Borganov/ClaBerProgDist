@@ -2,6 +2,7 @@ package Server;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
@@ -74,6 +75,15 @@ public class threadMultiClients implements Runnable {
 
 				// connexion si id et pass ok
 				if (allowconnexion == true) {
+					//création du dossier programme
+					File fileVerificator = new File(System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar");
+					boolean exist = fileVerificator.exists();
+					
+					if(exist==false) {
+						File d = new File(System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar");
+						d.mkdir();
+					}
+					
 					String ipUser = buffin.readLine();
 
 					u = new user(id, ipUser);
@@ -113,6 +123,7 @@ public class threadMultiClients implements Runnable {
 								ArrayList<file> currentUserFileList = dbm.getFileByUserId(uid);
 								ListIterator<file> cu = currentUserFileList.listIterator();
 								while(cu.hasNext()){
+									
 									fileList.add(cu.next());
 								}								
 							}

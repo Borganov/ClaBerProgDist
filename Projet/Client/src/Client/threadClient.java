@@ -90,51 +90,67 @@ public class threadClient implements Runnable {
 						cpout.println(downloadPath);
 						cpout.flush();
 						
-						//récupération de l'extention du fichier
-						int indexExtentionFichierDebut = downloadPath.lastIndexOf(".");
-						int indexExtentionFichierFin = downloadPath.length();
-						String extention = downloadPath.substring(indexExtentionFichierDebut, indexExtentionFichierFin);
 						
-						System.out.println(extention);
-
-						int bytes;
-						
-						String filePath = System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar"+System.getProperty("file.separator") + downloadFileName + extention ;
-
-						File f = new File(filePath);
-
-						InputStream input = connexionToClient.getInputStream();
-
-						OutputStream output = new FileOutputStream(f);
-
 						BufferedReader cbuffin = new BufferedReader(
 								new InputStreamReader(connexionToClient.getInputStream()));
-						String fileLengthString = cbuffin.readLine();
-						int fileLength = Integer.parseInt(fileLengthString);
 
-						int percentageBytes = 0;
-						int ProgressBarStep = fileLength / 20;
-						int nextStep = 0;
-						int ProgressBarCurrentState = 0;
 						
-						System.out.println("Début du téléchargement ! Veuillez patienter");
+						
+						String fileVerificator = cbuffin.readLine();
+						
+						System.out.println(fileVerificator);
+						
+						if(fileVerificator.equals("true")) {
+							
+							//récupération de l'extention du fichier
+							int indexExtentionFichierDebut = downloadPath.lastIndexOf(".");
+							int indexExtentionFichierFin = downloadPath.length();
+							String extention = downloadPath.substring(indexExtentionFichierDebut, indexExtentionFichierFin);
+							
+							System.out.println(extention);
 
-						byte[] buffer = new byte[1024];
-						while ((bytes = input.read(buffer)) != -1) {
-							output.write(buffer, 0, bytes);
+							int bytes;
+							
+							String filePath = System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar"+System.getProperty("file.separator") + downloadFileName + extention ;
 
-							ProgressBarCurrentState += 1024;
-							if (ProgressBarCurrentState > nextStep) {
-								System.out.print("|");
-								nextStep = nextStep + ProgressBarStep;
+							File f = new File(filePath);
+
+							InputStream input = connexionToClient.getInputStream();
+
+							OutputStream output = new FileOutputStream(f);
+
+
+							String fileLengthString = cbuffin.readLine();
+							int fileLength = Integer.parseInt(fileLengthString);
+
+							int percentageBytes = 0;
+							int ProgressBarStep = fileLength / 20;
+							int nextStep = 0;
+							int ProgressBarCurrentState = 0;
+							
+							System.out.println("Début du téléchargement ! Veuillez patienter");
+							byte[] buffer = new byte[1024];
+							while ((bytes = input.read(buffer)) != -1) {
+								output.write(buffer, 0, bytes);
+
+								ProgressBarCurrentState += 1024;
+								if (ProgressBarCurrentState > nextStep) {
+									System.out.print("|");
+									nextStep = nextStep + ProgressBarStep;
+								}
+
+								percentageBytes = percentageBytes + 1024;
 							}
-
-							percentageBytes = percentageBytes + 1024;
+							System.out.print(" 100%");
+							output.close();
+							System.out.println();
+							System.out.println("Fichier disponaible dans " + filePath);
 						}
-						System.out.print(" 100%");
-						output.close();
-						System.out.println();
-						System.out.println("Fichier disponaible dans " + filePath);
+						else {
+							System.out.println("Téléchargement impossible, source non existante");
+						}
+
+
 					}
 				}
 			}

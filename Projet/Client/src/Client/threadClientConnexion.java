@@ -24,9 +24,25 @@ public class threadClientConnexion implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
+			
 			BufferedReader buffin = new BufferedReader(new InputStreamReader(clientSocketOnClient.getInputStream()));
 			String path = buffin.readLine();
-			sentFile(path);
+			PrintWriter pout = new PrintWriter(clientSocketOnClient.getOutputStream());
+			
+			File fileVerificator = new File(path);
+			boolean exist = fileVerificator.exists();
+			
+			if(exist==true) {
+				pout.println("true");
+				pout.flush();
+				sentFile(path);
+			}
+			else {
+				pout.println("false");
+				pout.flush();
+			}
+			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
