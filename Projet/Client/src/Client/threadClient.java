@@ -49,6 +49,7 @@ public class threadClient implements Runnable {
 					String fileName = sc.nextLine();
 					pout.println(fileName);
 					pout.flush();
+					clientSocketOnClient.close();
 
 				} else {
 					if (choice.equals("2")) {
@@ -62,12 +63,15 @@ public class threadClient implements Runnable {
 						boolean out = false;
 						do {
 							messageFileDL = buffin.readLine();
-							//Si aucun fichier n'est téléchargeable on ferme tout
-							if(messageFileDL.equals("Aucun fichier")){
+
+							// Si aucun fichier n'est téléchargeable on ferme
+							// tout
+
+							if (messageFileDL.equals("Aucun fichier")) {
 								clientSocketOnClient.close();
 								sc.close();
 							}
-							
+
 							if (messageFileDL.equals("Terminate")) {
 								out = true;
 							} else {
@@ -155,6 +159,9 @@ public class threadClient implements Runnable {
 							sc.close();
 						}
 
+					} else {
+						
+						clientSocketOnClient.close();
 					}
 				}
 			}

@@ -60,6 +60,12 @@ public class clientMain {
 			String choiceConnexion = sc.nextLine();
 			pout.println(choiceConnexion);
 			pout.flush();
+			
+			if(!choiceConnexion.equals("1") || !choiceConnexion.equals("2") ){
+				System.out.println("Au revoir");
+				return;
+				
+			}
 			// identification ou enregistrement de l'id
 			boolean controleID = true;
 			do {
