@@ -1,23 +1,17 @@
 package Server;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 public class threadMultiClients implements Runnable {
 	private Socket clientSocketOnServer;
 	private user u;
 	private usersList usersList;
-	private downloadableFilesTab dft = new downloadableFilesTab();
 	private dbManager dbm;
 	loggerManager loggerMgr; 
 
@@ -212,7 +206,7 @@ public class threadMultiClients implements Runnable {
 							clientSocketOnServer.close();
 
 						} else {
-							loggerMgr.setLoggs(1, id + " give wrong command");
+							loggerMgr.setLoggs(2, id + " give wrong command");
 							clientSocketOnServer.close();
 							
 						}

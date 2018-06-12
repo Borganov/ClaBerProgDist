@@ -20,6 +20,8 @@ public class clientMain {
 
 		Socket clSocket;
 		ServerSocket myClserver;
+		
+		String ipServer;
 
 		// le client cherche la même address ip que le server
 		try {
@@ -40,7 +42,12 @@ public class clientMain {
 					}
 				}
 			}
-			clSocket = new Socket(ip, 45000);
+			System.out.println("Veuillez entrer l'ip du serveur");
+			Scanner ipReader = new Scanner(System.in);
+			ipServer = ipReader.nextLine();
+
+			
+			clSocket = new Socket(ipServer, 45000);
 			// reception du message de connexion
 			BufferedReader buffin = new BufferedReader(new InputStreamReader(clSocket.getInputStream()));
 			String messageConnexion;
@@ -90,7 +97,7 @@ public class clientMain {
 				clientclient.start();
 			}
 
-			// clSocket.close();
+			
 
 		} catch (Exception e) {
 			// TODO: handle exception

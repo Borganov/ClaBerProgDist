@@ -58,7 +58,6 @@ public class threadClient implements Runnable {
 						System.out.println();
 
 						String messageFileDL = "Continue";
-						String[] FileDL;
 
 						boolean out = false;
 						do {
@@ -66,6 +65,7 @@ public class threadClient implements Runnable {
 							//Si aucun fichier n'est téléchargeable on ferme tout
 							if(messageFileDL.equals("Aucun fichier")){
 								clientSocketOnClient.close();
+								sc.close();
 							}
 							
 							if (messageFileDL.equals("Terminate")) {
@@ -147,8 +147,12 @@ public class threadClient implements Runnable {
 							output.close();
 							System.out.println();
 							System.out.println("Fichier disponaible dans " + filePath);
+							clientSocketOnClient.close();
+							sc.close();
 						} else {
 							System.out.println("Téléchargement impossible, source non existante");
+							clientSocketOnClient.close();
+							sc.close();
 						}
 
 					}

@@ -9,7 +9,7 @@ public class dbManager {
 
 	public dbManager() throws java.lang.Exception{
 		Class.forName("org.hsqldb.jdbcDriver");
-		String url ="jdbc:hsqldb:/c:/temp/projetdb_file";
+		String url ="jdbc:hsqldb:./projetdb_file";
 		
 		con = DriverManager.getConnection(url, "sa", "");
 		
