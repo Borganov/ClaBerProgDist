@@ -89,34 +89,33 @@ public class threadClient implements Runnable {
 						PrintWriter cpout = new PrintWriter(connexionToClient.getOutputStream());
 						cpout.println(downloadPath);
 						cpout.flush();
-						
-						
+
 						BufferedReader cbuffin = new BufferedReader(
 								new InputStreamReader(connexionToClient.getInputStream()));
 
-						
-						
 						String fileVerificator = cbuffin.readLine();
-						
-						if(fileVerificator.equals("true")) {
-							
-							//récupération de l'extention du fichier
+
+						if (fileVerificator.equals("true")) {
+
+							// récupération de l'extention du fichier
 							int indexExtentionFichierDebut = downloadPath.lastIndexOf(".");
 							int indexExtentionFichierFin = downloadPath.length();
-							String extention = downloadPath.substring(indexExtentionFichierDebut, indexExtentionFichierFin);
-							
+							String extention = downloadPath.substring(indexExtentionFichierDebut,
+									indexExtentionFichierFin);
+
 							System.out.println(extention);
 
 							int bytes;
-							
-							String filePath = System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar"+System.getProperty("file.separator") + downloadFileName + extention ;
+
+							String filePath = System.getProperty("user.home") + System.getProperty("file.separator")
+									+ "ClaberSoftwar" + System.getProperty("file.separator") + downloadFileName
+									+ extention;
 
 							File f = new File(filePath);
 
 							InputStream input = connexionToClient.getInputStream();
 
 							OutputStream output = new FileOutputStream(f);
-
 
 							String fileLengthString = cbuffin.readLine();
 							int fileLength = Integer.parseInt(fileLengthString);
@@ -125,7 +124,7 @@ public class threadClient implements Runnable {
 							int ProgressBarStep = fileLength / 20;
 							int nextStep = 0;
 							int ProgressBarCurrentState = 0;
-							
+
 							System.out.println("Début du téléchargement ! Veuillez patienter");
 							byte[] buffer = new byte[1024];
 							while ((bytes = input.read(buffer)) != -1) {
@@ -143,11 +142,9 @@ public class threadClient implements Runnable {
 							output.close();
 							System.out.println();
 							System.out.println("Fichier disponaible dans " + filePath);
-						}
-						else {
+						} else {
 							System.out.println("Téléchargement impossible, source non existante");
 						}
-
 
 					}
 				}

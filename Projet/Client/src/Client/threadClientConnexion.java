@@ -24,29 +24,26 @@ public class threadClientConnexion implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
-			
+
 			BufferedReader buffin = new BufferedReader(new InputStreamReader(clientSocketOnClient.getInputStream()));
 			String path = buffin.readLine();
 			PrintWriter pout = new PrintWriter(clientSocketOnClient.getOutputStream());
-			
+
 			File fileVerificator = new File(path);
 			boolean exist = fileVerificator.exists();
-			
-			if(exist==true) {
+
+			if (exist == true) {
 				pout.println("true");
 				pout.flush();
 				sentFile(path);
-			}
-			else {
+			} else {
 				pout.println("false");
 				pout.flush();
 			}
-			
 
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-
 
 	}
 
@@ -54,18 +51,16 @@ public class threadClientConnexion implements Runnable {
 		try {
 			int fileLength;
 
-			
 			File f = new File(sourcePath);
-			
-			fileLength=(int) f.length();
-			
+
+			fileLength = (int) f.length();
+
 			byte[] bytes = new byte[fileLength];
 			PrintWriter pout = new PrintWriter(clientSocketOnClient.getOutputStream());
 			String fileLengthString;
 			fileLengthString = Integer.toString(fileLength);
 			pout.println(fileLengthString);
 			pout.flush();
-			
 
 			FileInputStream fis = new FileInputStream(f);
 			BufferedInputStream bis = new BufferedInputStream(fis);

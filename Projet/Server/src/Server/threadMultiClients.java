@@ -23,7 +23,7 @@ public class threadMultiClients implements Runnable {
 	public threadMultiClients(Socket clientSocketOnServer, usersList usersList) {
 		this.clientSocketOnServer = clientSocketOnServer;
 		this.usersList = usersList;
-		
+
 		try {
 			dbm = new dbManager();
 		} catch (Exception e) {
@@ -46,7 +46,6 @@ public class threadMultiClients implements Runnable {
 			BufferedReader buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
 			String choiceConnexion = buffin.readLine();
 
-
 			// identification du client
 			if (choiceConnexion.equals("1")) {
 				// demande identifiant
@@ -57,8 +56,10 @@ public class threadMultiClients implements Runnable {
 				buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
 				String id = buffin.readLine();
 
-				/* pour ne pas qu'il rentre dans la boucle destinée au contrôle de
-				l'enregistrement destiné à l'enregistrement*/
+				/*
+				 * pour ne pas qu'il rentre dans la boucle destinée au contrôle de
+				 * l'enregistrement destiné à l'enregistrement
+				 */
 				pout.println("true");
 				pout.flush();
 				// demande mot de passe
@@ -72,18 +73,19 @@ public class threadMultiClients implements Runnable {
 				// contrôle identifiant/mot de passe
 				boolean allowconnexion = dbm.login(id, pass);
 
-
 				// connexion si id et pass ok
 				if (allowconnexion == true) {
-					//création du dossier programme
-					File fileVerificator = new File(System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar");
+					// création du dossier programme
+					File fileVerificator = new File(
+							System.getProperty("user.home") + System.getProperty("file.separator") + "ClaberSoftwar");
 					boolean exist = fileVerificator.exists();
-					
-					if(exist==false) {
-						File d = new File(System.getProperty("user.home") + System.getProperty("file.separator") +"ClaberSoftwar");
+
+					if (exist == false) {
+						File d = new File(System.getProperty("user.home") + System.getProperty("file.separator")
+								+ "ClaberSoftwar");
 						d.mkdir();
 					}
-					
+
 					String ipUser = buffin.readLine();
 
 					u = new user(id, ipUser);
@@ -92,7 +94,7 @@ public class threadMultiClients implements Runnable {
 					pout.println("Bienvenu sur ClaBer server" + " " + id);
 					pout.flush();
 					loggerManager test = new loggerManager("test");
-					test.setLoggs(1, id+" s'est connecté avec succès");
+					test.setLoggs(1, id + " s'est connecté avec succès");
 					pout.println(
 							"1 pour uploader un fichier | 2 pour downloader un fichier | autre touche pour quitter");
 					pout.flush();
@@ -107,55 +109,58 @@ public class threadMultiClients implements Runnable {
 						pout.flush();
 						String fileName = buffin.readLine();
 						int uid = dbm.getIdByLogin(id);
-						dbm.addFile(fileName, path, uid );	
+						dbm.addFile(fileName, path, uid);
 
 						// effaçage de l'utilisateur et deconnexion de ce dernier
 						usersList.remove(id);
 					} else {
 						if (choiceOption.equals("2")) {
 
-							//Liste des utilisateur connecté
+							// Liste des utilisateur connecté
 							int uid;
+
 							ArrayList<file> fileList = new ArrayList<file>();
 							ListIterator<user> iu = usersList.usersList.listIterator();
 							while (iu.hasNext()) {
-								uid=dbm.getIdByLogin(iu.next().getId());
+								uid = dbm.getIdByLogin(iu.next().getId());
 								ArrayList<file> currentUserFileList = dbm.getFileByUserId(uid);
 								ListIterator<file> cu = currentUserFileList.listIterator();
-								while(cu.hasNext()){
-									
+								while (cu.hasNext()) {
+
 									fileList.add(cu.next());
-								}								
+
+								}
+
 							}
 
 							ListIterator<file> fi = fileList.listIterator();
-							
-							while(fi.hasNext()){
+
+							while (fi.hasNext()) {
 								fi.next();
-								String sendLine =  fileList.get(fi.nextIndex()-1).getUid() + " - " + fileList.get(fi.nextIndex()-1).getName();
+								String sendLine = fileList.get(fi.nextIndex() - 1).getUid() + " - "
+										+ fileList.get(fi.nextIndex() - 1).getName();
 								pout.println(sendLine);
 								pout.flush();
 							}
-							
+
 							String loopEnd = "Terminate";
 							pout.println(loopEnd);
 							pout.flush();
 
-							
 							// reception du choix de téléchargement
 							String downloadChoice = buffin.readLine();
-							
+
 							// recherche de l'ip et du chemin du fichier à télécharger
 
 							String downloadPath = null;
 							String downloadFileName = null;
 							int downloadUserId = -1;
 							ListIterator<file> fii = fileList.listIterator();
-							while(fii.hasNext()){
-								if(fii.next().getUid()==Integer.parseInt(downloadChoice)) {
-									downloadPath = fileList.get(fii.nextIndex()-1).getPath();
-									downloadUserId = fileList.get(fii.nextIndex()-1).getUid();
-									downloadFileName = fileList.get(fii.nextIndex()-1).getName();
+							while (fii.hasNext()) {
+								if (fii.next().getUid() == Integer.parseInt(downloadChoice)) {
+									downloadPath = fileList.get(fii.nextIndex() - 1).getPath();
+									downloadUserId = fileList.get(fii.nextIndex() - 1).getUid();
+									downloadFileName = fileList.get(fii.nextIndex() - 1).getName();
 								}
 							}
 
@@ -163,23 +168,19 @@ public class threadMultiClients implements Runnable {
 							String userName = dbm.getUserNameByUserId(downloadUserId);
 
 							ListIterator<user> liu = usersList.usersList.listIterator();
-							while(liu.hasNext()){
-								if(liu.next().getId().equals(userName))
-								{
-									downloadIp = usersList.usersList.get(liu.nextIndex()-1).getIp();
+							while (liu.hasNext()) {
+								if (liu.next().getId().equals(userName)) {
+									downloadIp = usersList.usersList.get(liu.nextIndex() - 1).getIp();
 								}
 
-
 							}
-							
+
 							pout.println(downloadIp);
 							pout.flush();
 							pout.println(downloadPath);
 							pout.flush();
 							pout.println(downloadFileName);
 							pout.flush();
-							
-
 
 							// effaçage de l'utilisateur quand il se déconnecte
 							usersList.remove(id);
@@ -198,7 +199,7 @@ public class threadMultiClients implements Runnable {
 				}
 
 			} else {
-				 //enregistrement d'un nouveau client
+				// enregistrement d'un nouveau client
 				if (choiceConnexion.equals("2")) {
 					boolean control = true;
 					boolean message = true;
@@ -212,7 +213,7 @@ public class threadMultiClients implements Runnable {
 						if (control == true) {
 							pout.println("Entrer votre identifiant :");
 							pout.flush();
-						} else{
+						} else {
 							pout.println("Identifiant déjà utilisé, entrer un autre identifiant :");
 							pout.flush();
 						}
@@ -220,16 +221,16 @@ public class threadMultiClients implements Runnable {
 						buffin = new BufferedReader(new InputStreamReader(clientSocketOnServer.getInputStream()));
 						newID = buffin.readLine();
 						// contrôle de la redondance de l'identifiant
-						
-						int index=dbm.getIdByLogin(newID);
-						
-						if(index>=0){
+
+						int index = dbm.getIdByLogin(newID);
+
+						if (index >= 0) {
 							control = false;
 							System.out.println(control);
-						}else{
+						} else {
 							control = true;
 						}
-						
+
 						// envoi des informations à la boucle client
 						if (control == true) {
 							pout.println("true");

@@ -35,7 +35,6 @@ public class serverMain {
 			e1.printStackTrace();
 		}
 
-
 		Enumeration<NetworkInterface> allNetworkInterfaces;
 		Enumeration<InetAddress> allInetAddresses;
 		InetAddress serverAddress = null;
