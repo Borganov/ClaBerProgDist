@@ -38,7 +38,7 @@ public class threadClientConnexion implements Runnable {
 				pout.println("false");
 				pout.flush();
 			}
-			clientSocketOnClient.close();
+			
 
 		} catch (Exception e) {
 			// TODO: handle exception
